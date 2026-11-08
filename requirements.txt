@@ -4,3 +4,4 @@ PyMySQL
 Flask-Login
 Flask-WTF
 python-dotenv
+gunicorn
