@@ -1,79 +1,265 @@
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>TrustVault Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrustVault | Dashboard</title>
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial;
-            background: #eef2f7;
-            text-align: center;
-            padding-top: 60px;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #102a43;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .brand span {
+            color: #60a5fa;
         }
 
         .container {
-            background: white;
-            width: 450px;
-            margin: auto;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px #ccc;
+            max-width: 1000px;
+            margin: 45px auto;
+            padding: 0 20px;
         }
 
-        button {
-            background: #174ea6;
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border-left: 5px solid #2563eb;
+        }
+
+        .welcome h1 {
+            margin-top: 0;
+            color: #102a43;
+        }
+
+        .role {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 7px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            margin: 35px 0 18px;
+            color: #102a43;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card h3 {
+            color: #1d4ed8;
+            margin-top: 0;
+        }
+
+        .card p {
+            color: #64748b;
+            line-height: 1.6;
+            min-height: 48px;
+        }
+
+        .card a {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .card a:hover {
+            background: #1d4ed8;
+        }
+
+        .admin-card {
+            border-top: 4px solid #0f766e;
+        }
+
+        .admin-card h3 {
+            color: #0f766e;
+        }
+
+        .admin-card a {
+            background: #0f766e;
+        }
+
+        .admin-card a:hover {
+            background: #115e59;
+        }
+
+        .flash {
+            padding: 13px;
+            margin-top: 15px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 7px;
+        }
+
+        .logout {
+            text-align: center;
+            margin-top: 35px;
+        }
+
+        .logout button {
+            background: #dc2626;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 12px 28px;
+            border-radius: 7px;
             cursor: pointer;
+            font-size: 15px;
+        }
+
+        .logout button:hover {
+            background: #b91c1c;
+        }
+
+        footer {
+            text-align: center;
+            color: #64748b;
+            padding: 25px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 18px 5%;
+            }
+
+            .container {
+                margin-top: 25px;
+            }
+
+            .welcome {
+                padding: 22px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="navbar">
+        <div class="brand">Trust<span>Vault</span></div>
+        <div>Secure Document Management</div>
+    </div>
 
-    <h1>Welcome to TrustVault!</h1>
+    <div class="container">
 
-    <h2>Hello, {{ user.username }}</h2>
+        <div class="welcome">
+            <h1>Welcome to TrustVault!</h1>
 
-    <p>Email: {{ user.email }}</p>
+            <h2>Hello, {{ user.username }}</h2>
 
-    <p>Your Role: {{ user.role }}</p>
-    <p>
-    <a href="{{ url_for('upload_document') }}">
-        Upload a Document
-    </a>
-    </p>
+            <p>Email: {{ user.email }}</p>
 
-    <h3>Secure Document Management System</h3>
+            <p>Your account role:</p>
+            <span class="role">{{ user.role }}</span>
 
-    <p>You have successfully logged in.</p>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for category, message in messages %}
-            <div style="padding: 12px; margin: 10px 0;
-                        background: #d4edda; color: #155724;
-                        border-radius: 5px;">
-                {{ message }}
+            <p>
+                Manage your documents securely with role-based
+                access control and activity monitoring.
+            </p>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% for category, message in messages %}
+                    <div class="flash">{{ message }}</div>
+                {% endfor %}
+            {% endwith %}
+        </div>
+
+        <h2 class="section-title">Your Dashboard</h2>
+
+        <div class="cards">
+
+            {% if user.role in ['owner', 'admin'] %}
+            <div class="card">
+                <h3>Upload Documents</h3>
+                <p>Upload and securely store your important documents.</p>
+                <a href="{{ url_for('upload_document') }}">
+                    Upload Now
+                </a>
             </div>
-        {% endfor %}
-    {% endwith %}
+            {% endif %}
 
-    <p>
-    <a href="{{ url_for('documents') }}">
-        View My Documents
-    </a>
-</p>
-    <form method="POST" action="{{ url_for('logout') }}">
-        <input type="hidden" name="csrf_token"
-               value="{{ csrf_token() }}">
-        <button type="submit">Logout</button>
-    </form>
+            <div class="card">
+                <h3>My Documents</h3>
+                <p>View, search and manage documents you own or can access.</p>
+                <a href="{{ url_for('documents') }}">
+                    View Documents
+                </a>
+            </div>
 
-</div>
+            {% if user.role == 'admin' %}
+            <div class="card admin-card">
+                <h3>Admin Audit Logs</h3>
+                <p>Monitor system activities and review security audit records.</p>
+                <a href="/admin/audit">
+                    View Audit Logs
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <div class="logout">
+            <form method="POST" action="{{ url_for('logout') }}">
+                <input type="hidden" name="csrf_token"
+                       value="{{ csrf_token() }}">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+
+    </div>
+
+    <footer>
+        TrustVault &copy; 2026 | Secure Document Management System
+    </footer>
 
 </body>
 </html>
