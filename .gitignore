@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+uploads/
+instance/
+.pytest_cache/
+.coverage
+create_admin.py
+reset_admin_password.py
+.vscode/
+test.py

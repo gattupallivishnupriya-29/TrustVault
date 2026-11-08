@@ -1,0 +1,79 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TrustVault Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f7;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .container {
+            background: white;
+            width: 450px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        button {
+            background: #174ea6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Welcome to TrustVault!</h1>
+
+    <h2>Hello, {{ user.username }}</h2>
+
+    <p>Email: {{ user.email }}</p>
+
+    <p>Your Role: {{ user.role }}</p>
+    <p>
+    <a href="{{ url_for('upload_document') }}">
+        Upload a Document
+    </a>
+    </p>
+
+    <h3>Secure Document Management System</h3>
+
+    <p>You have successfully logged in.</p>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div style="padding: 12px; margin: 10px 0;
+                        background: #d4edda; color: #155724;
+                        border-radius: 5px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endwith %}
+
+    <p>
+    <a href="{{ url_for('documents') }}">
+        View My Documents
+    </a>
+</p>
+    <form method="POST" action="{{ url_for('logout') }}">
+        <input type="hidden" name="csrf_token"
+               value="{{ csrf_token() }}">
+        <button type="submit">Logout</button>
+    </form>
+
+</div>
+
+</body>
+</html>

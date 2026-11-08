@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TrustVault Admin Audit Dashboard</title>
+</head>
+<body>
+
+    <h1>TrustVault Admin Audit Dashboard</h1>
+
+    <p>Welcome, Administrator!</p>
+
+    <a href="{{ url_for('dashboard') }}">
+        Back to Dashboard
+    </a>
+
+    <hr>
+
+    <h2>Recent Activity Logs</h2>
+    <p>
+    <a href="{{ url_for('verify_audit') }}">
+        Verify Audit Integrity
+    </a>
+    </p>
+
+    <table border="1" cellpadding="10">
+        <thead>
+            <tr>
+                <th>Log ID</th>
+                <th>Actor ID</th>
+                <th>Document ID</th>
+                <th>Action</th>
+                <th>Outcome</th>
+                <th>Details</th>
+                <th>Date and Time</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.id }}</td>
+                <td>{{ log.actor_id }}</td>
+                <td>
+                    {{ log.document_id if log.document_id is not none else "-" }}
+                </td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.outcome }}</td>
+                <td>{{ log.details }}</td>
+                <td>{{ log.created_at }}</td>
+            </tr>
+
+            {% else %}
+            <tr>
+                <td colspan="7">No audit records found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

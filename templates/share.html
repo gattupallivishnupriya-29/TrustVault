@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Share Document - TrustVault</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f8;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+        }
+
+        h2, h3 {
+            color: #263b63;
+        }
+
+        input, select, button {
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            background: #263b63;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background: #263b63;
+            color: white;
+        }
+
+        .message {
+            padding: 10px;
+            background: #d4edda;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Share Document</h2>
+
+    <p><strong>Document:</strong> {{ document.title }}</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="message">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <h3>Grant Access</h3>
+
+    <form method="POST">
+
+        <input type="hidden"
+               name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <label>Select User:</label>
+        <br>
+
+        <select name="recipient_id" required>
+            <option value="">Choose a registered user</option>
+
+            {% for user in users %}
+                <option value="{{ user.id }}">
+                    {{ user.username }} ({{ user.email }})
+                </option>
+            {% endfor %}
+        </select>
+
+        <br><br>
+
+        <label>Select Permission:</label>
+        <br>
+
+        <select name="access_level" required>
+            <option value="read">Read Permission</option>
+            <option value="edit">Edit Permission</option>
+        </select>
+
+        <br>
+
+        <button type="submit">Grant Access</button>
+
+    </form>
+
+    <hr>
+
+    <h3>Users With Access</h3>
+
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Permission</th>
+            <th>Action</th>
+        </tr>
+
+        {% for permission, user in permissions %}
+        <tr>
+            <td>{{ user.username }}</td>
+
+            <td>
+                {% if permission.can_edit %}
+                    Edit
+                {% elif permission.can_read %}
+                    Read
+                {% else %}
+                    No access
+                {% endif %}
+            </td>
+
+            <td>
+                <form method="POST"
+                      action="{{ url_for('revoke_permission',
+                      document_id=document.id,
+                      user_id=user.id) }}">
+
+                    <input type="hidden"
+                           name="csrf_token"
+                           value="{{ csrf_token() }}">
+
+                    <button type="submit">Revoke</button>
+                </form>
+            </td>
+        </tr>
+
+        {% else %}
+        <tr>
+            <td colspan="3">No users have access yet.</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <br>
+
+    <a href="{{ url_for('documents') }}">Back to My Documents</a>
+
+</div>
+
+</body>
+</html>

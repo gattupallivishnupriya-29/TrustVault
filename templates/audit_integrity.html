@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audit Integrity Verification</title>
+</head>
+<body>
+
+    <h1>TrustVault Audit Integrity Verification</h1>
+
+    <p>
+        <a href="{{ url_for('admin_audit') }}">
+            Back to Audit Dashboard
+        </a>
+    </p>
+
+    <hr>
+
+    {% if is_valid %}
+
+        <h2 style="color: green;">
+            Audit Integrity Verified!
+        </h2>
+
+        <p>
+            All audit records passed the hash-chain verification.
+        </p>
+
+    {% else %}
+
+        <h2 style="color: red;">
+            Audit Integrity Verification Failed!
+        </h2>
+
+        <p>
+            Problem detected at audit record ID:
+            {{ failed_log_id }}
+        </p>
+
+    {% endif %}
+
+</body>
+</html>

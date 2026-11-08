@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TrustVault - Register</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #eef2f7;
+            text-align: center;
+            padding-top: 60px;
+        }
+
+        .container {
+            background: white;
+            width: 350px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        input, select {
+            width: 90%;
+            padding: 12px;
+            margin: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #174ea6;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            cursor: pointer;
+        }
+
+        a {
+            color: #174ea6;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>TrustVault</h1>
+    <h3>Create Your Account</h3>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <input type="hidden" name="csrf_token"
+               value="{{ csrf_token() }}">
+
+        <input type="text" name="username"
+               placeholder="Enter username" required>
+
+        <input type="email" name="email"
+               placeholder="Enter email" required>
+
+        <input type="password" name="password"
+               placeholder="Enter password (minimum 8 characters)"
+               minlength="8" required>
+
+        <select name="role" required>
+            <option value="owner">Owner</option>
+            <option value="viewer">Viewer</option>
+        </select>
+
+        <br>
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <p>Already have an account?
+        <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+
+</div>
+
+</body>
+</html>
